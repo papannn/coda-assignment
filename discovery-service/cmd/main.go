@@ -1,10 +1,9 @@
 package main
 
 import (
-	"fmt"
-	"github.com/papannn/coda-assignment/config"
+	"github.com/papannn/coda-assignment/server"
 )
 
 func main() {
-	fmt.Println(config.ConfigObj)
+	server.Serve()
 }
