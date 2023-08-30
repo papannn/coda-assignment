@@ -9,8 +9,10 @@ import (
 )
 
 type Config struct {
-	HealthCheckTimeInterval int64 `json:"health_check_time_interval"`
-	TimeoutThreshold        int64 `json:"timeout_threshold"`
+	IP                      string `json:"ip"`
+	Port                    string `json:"port"`
+	HealthCheckTimeInterval int64  `json:"health_check_time_interval"`
+	TimeoutThreshold        int64  `json:"timeout_threshold"`
 }
 
 var (

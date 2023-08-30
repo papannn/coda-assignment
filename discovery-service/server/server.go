@@ -9,5 +9,7 @@ func Serve() {
 	mux := http.NewServeMux()
 	handler.RegisterRoutes(mux)
 
-	http.ListenAndServe(":4444", mux)
+	log.Println(fmt.Sprintf("Running on address: %s:%s", config.ConfigObj.IP, config.ConfigObj.Port))
+
+	http.ListenAndServe(fmt.Sprintf("%s:%s", config.ConfigObj.IP, config.ConfigObj.Port), mux)
 }

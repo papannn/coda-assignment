@@ -1,4 +1,6 @@
 {
+  "ip": "localhost",
+  "port": "4444",
   "health_check_time_interval": 5,
   "timeout_threshold": 3
 }
