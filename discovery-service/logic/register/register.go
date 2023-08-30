@@ -11,15 +11,17 @@ func Register(request api.RegisterRequest) error {
 	serviceList, ok := logic.ServiceMap[request.Namespace]
 	if ok {
 		serviceList.Services = append(serviceList.Services, logic.Service{
-			IP:   request.IP,
-			Port: request.Port,
+			IP:       request.IP,
+			Port:     request.Port,
+			IsActive: true,
 		})
 	} else {
 		logic.ServiceMap[request.Namespace] = &logic.ServiceList{
 			Services: []logic.Service{
 				{
-					IP:   request.IP,
-					Port: request.Port,
+					IP:       request.IP,
+					Port:     request.Port,
+					IsActive: true,
 				},
 			},
 		}

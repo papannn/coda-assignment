@@ -1,8 +1,9 @@
 package logic
 
 type Service struct {
-	IP   string
-	Port string
+	IP       string
+	Port     string
+	IsActive bool
 }
 
 type ServiceList struct {
