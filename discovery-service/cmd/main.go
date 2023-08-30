@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/papannn/coda-assignment/server"
+	"github.com/papannn/coda-assignment/discovery-service/server"
 )
 
 func main() {

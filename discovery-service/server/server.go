@@ -1,7 +1,10 @@
 package server
 
 import (
-	"github.com/papannn/coda-assignment/handler"
+	"fmt"
+	"github.com/papannn/coda-assignment/discovery-service/config"
+	"github.com/papannn/coda-assignment/discovery-service/handler"
+	"log"
 	"net/http"
 )
 

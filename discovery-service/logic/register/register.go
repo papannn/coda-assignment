@@ -1,8 +1,8 @@
 package register
 
 import (
-	"github.com/papannn/coda-assignment/api"
-	"github.com/papannn/coda-assignment/logic"
+	"github.com/papannn/coda-assignment/discovery-service/api"
+	"github.com/papannn/coda-assignment/discovery-service/logic"
 )
 
 func Register(request api.RegisterRequest) error {

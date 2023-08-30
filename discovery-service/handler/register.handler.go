@@ -1,39 +1,28 @@
 package handler
 
 import (
-	"encoding/json"
-	"github.com/papannn/coda-assignment/api"
-	logic "github.com/papannn/coda-assignment/logic/register"
-	"io"
+	"github.com/papannn/coda-assignment/discovery-service/api"
+	"github.com/papannn/coda-assignment/discovery-service/logic/register"
+	"github.com/papannn/coda-assignment/lib/parser"
+	"github.com/papannn/coda-assignment/lib/response_writer"
 	"net/http"
 )
 
 func Register(writer http.ResponseWriter, request *http.Request) {
-	// TODO add middleware for handler to minimize manually setting up the Content-Type and parsing the json req + resp
-	writer.Header().Set("Content-Type", "application/json")
-	requestByte, err := io.ReadAll(request.Body)
-	if err != nil {
-		writer.WriteHeader(http.StatusBadRequest)
-	}
-
 	req := api.RegisterRequest{}
-	err = json.Unmarshal(requestByte, &req)
+	err := parser.ParseRequest(request, &req)
 	if err != nil {
-		writer.WriteHeader(http.StatusBadRequest)
-		res := api.RegisterResponse{Message: "error unmarshal request body"}
-		resByte, _ := json.Marshal(res)
-		writer.Write(resByte)
+		response_writer.Write(writer, api.RegisterResponse{Message: err.Error()}, http.StatusBadRequest)
 		return
 	}
 
-	err = logic.Register(req)
+	err = register.Register(req)
 	if err != nil {
-		res := api.RegisterResponse{Message: err.Error()}
-		resByte, _ := json.Marshal(res)
-		writer.Write(resByte)
+		response_writer.Write(writer, api.RegisterResponse{Message: err.Error()}, http.StatusBadRequest)
 		return
 	}
-	res := api.RegisterResponse{Message: "success register service"}
-	resByte, _ := json.Marshal(res)
-	writer.Write(resByte)
+
+	response_writer.Write(writer, api.RegisterResponse{
+		Message: "success register service",
+	}, http.StatusOK)
 }
