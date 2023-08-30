@@ -4,9 +4,9 @@ import (
 	"net/http"
 )
 
-func RegisterRoutes(mux *http.ServeMux) {
-	mux.HandleFunc("/api/register", Register)
-	mux.HandleFunc("/api/unregister", Unregister)
-	mux.HandleFunc("/api/lookup", Lookup)
-	mux.HandleFunc("/api/status", Status)
+func (service *DiscoveryService) RegisterRoutes() {
+	http.HandleFunc("/api/register", service.RegisterEndpoint)
+	http.HandleFunc("/api/unregister", service.UnregisterEndpoint)
+	http.HandleFunc("/api/lookup", service.LookupEndpoint)
+	http.HandleFunc("/api/status", service.StatusEndpoint)
 }

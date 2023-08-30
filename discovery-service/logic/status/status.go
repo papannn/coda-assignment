@@ -5,10 +5,18 @@ import (
 	"github.com/papannn/coda-assignment/discovery-service/logic"
 )
 
-func Status() (*api.StatusResponse, error) {
+type IStatus interface {
+	Status() (*api.StatusResponse, error)
+}
+
+type Impl struct {
+	ServiceMap logic.ServiceMap
+}
+
+func (impl *Impl) Status() (*api.StatusResponse, error) {
 	resp := make(map[string]api.ServiceList)
 
-	for key, list := range logic.ServiceMap {
+	for key, list := range impl.ServiceMap {
 		var serviceList []api.Service
 
 		for _, service := range list.Services {

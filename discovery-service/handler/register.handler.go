@@ -2,13 +2,12 @@ package handler
 
 import (
 	"github.com/papannn/coda-assignment/discovery-service/api"
-	logic "github.com/papannn/coda-assignment/discovery-service/logic/register"
 	"github.com/papannn/coda-assignment/lib/parser"
 	"github.com/papannn/coda-assignment/lib/response_writer"
 	"net/http"
 )
 
-func Register(writer http.ResponseWriter, request *http.Request) {
+func (service *DiscoveryService) RegisterEndpoint(writer http.ResponseWriter, request *http.Request) {
 	req := api.RegisterRequest{}
 	err := parser.ParseRequest(request, &req)
 	if err != nil {
@@ -16,7 +15,7 @@ func Register(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	err = logic.Register(req)
+	err = service.RegisterLogic.Register(req)
 	if err != nil {
 		response_writer.Write(writer, api.RegisterResponse{Message: err.Error()}, http.StatusBadRequest)
 		return

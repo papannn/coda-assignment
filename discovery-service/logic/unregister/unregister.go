@@ -8,8 +8,16 @@ import (
 	"slices"
 )
 
-func Unregister(req api.UnregisterRequest) error {
-	serviceList, ok := logic.ServiceMap[req.Namespace]
+type IUnregister interface {
+	Unregister(req api.UnregisterRequest) error
+}
+
+type Impl struct {
+	ServiceMap logic.ServiceMap
+}
+
+func (impl *Impl) Unregister(req api.UnregisterRequest) error {
+	serviceList, ok := impl.ServiceMap[req.Namespace]
 	if !ok {
 		return errors.New("namespace is not found")
 	}

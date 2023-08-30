@@ -6,8 +6,16 @@ import (
 	"github.com/papannn/coda-assignment/discovery-service/logic"
 )
 
-func Lookup(req api.LookupRequest) (*api.LookupResponse, error) {
-	serviceList, ok := logic.ServiceMap[req.Namespace]
+type ILookup interface {
+	Lookup(req api.LookupRequest) (*api.LookupResponse, error)
+}
+
+type Impl struct {
+	ServiceMap logic.ServiceMap
+}
+
+func (impl *Impl) Lookup(req api.LookupRequest) (*api.LookupResponse, error) {
+	serviceList, ok := impl.ServiceMap[req.Namespace]
 	if !ok {
 		return nil, errors.New("namespace is not found")
 	}

@@ -11,10 +11,4 @@ type ServiceList struct {
 	Index    int64
 }
 
-var (
-	ServiceMap map[string]*ServiceList
-)
-
-func init() {
-	ServiceMap = make(map[string]*ServiceList)
-}
+type ServiceMap = map[string]*ServiceList
