@@ -28,3 +28,7 @@ type LookupResponse struct {
 	IP   string `json:"ip"`
 	Port string `json:"port"`
 }
+
+type StatusResponse struct {
+	ServiceMap map[string]ServiceList `json:"Service"`
+}
