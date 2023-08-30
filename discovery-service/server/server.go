@@ -69,11 +69,7 @@ func initiateGlobalVar(app *handler.DiscoveryService) {
 }
 
 func initiateLoadBalancingAlgorithm(app *handler.DiscoveryService) {
-	loadBalancerMap := map[string]load_balancer.ILoadBalancer{
-		"round_robin": &load_balancer.RoundRobin{},
-	}
-
-	algorithm, ok := loadBalancerMap[app.Config.LoadBalancingAlgorithm]
+	algorithm, ok := load_balancer.LoadBalancerMap[app.Config.LoadBalancingAlgorithm]
 	if !ok {
 		panic("please use the correct load balancing algorithm!")
 	}
