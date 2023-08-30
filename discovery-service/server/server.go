@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/papannn/coda-assignment/discovery-service/handler"
 	"github.com/papannn/coda-assignment/discovery-service/logic"
+	"github.com/papannn/coda-assignment/discovery-service/logic/load_balancer"
 	"github.com/papannn/coda-assignment/discovery-service/logic/lookup"
 	"github.com/papannn/coda-assignment/discovery-service/logic/register"
 	"github.com/papannn/coda-assignment/discovery-service/logic/status"
@@ -14,14 +15,15 @@ import (
 )
 
 var (
-	serviceMap logic.ServiceMap
+	serviceMap             logic.ServiceMap
+	loadBalancingAlgorithm load_balancer.ILoadBalancer
 )
 
 func Serve() {
 	app := handler.DiscoveryService{}
 
 	config.ReadConfig(&app.Config)
-	initiateServiceMap()
+	initiateGlobalVar(&app)
 	injectLogic(&app)
 	app.RegisterRoutes()
 
@@ -38,7 +40,8 @@ func injectLogic(app *handler.DiscoveryService) {
 
 func injectLookupLogic(app *handler.DiscoveryService) {
 	app.LookupLogic = &lookup.Impl{
-		ServiceMap: serviceMap,
+		ServiceMap:             serviceMap,
+		LoadBalancingAlgorithm: loadBalancingAlgorithm,
 	}
 }
 
@@ -60,6 +63,20 @@ func injectStatusLogic(app *handler.DiscoveryService) {
 	}
 }
 
-func initiateServiceMap() {
+func initiateGlobalVar(app *handler.DiscoveryService) {
 	serviceMap = make(map[string]*logic.ServiceList)
+	initiateLoadBalancingAlgorithm(app)
+}
+
+func initiateLoadBalancingAlgorithm(app *handler.DiscoveryService) {
+	loadBalancerMap := map[string]load_balancer.ILoadBalancer{
+		"round_robin": &load_balancer.RoundRobin{},
+	}
+
+	algorithm, ok := loadBalancerMap[app.Config.LoadBalancingAlgorithm]
+	if !ok {
+		panic("please use the correct load balancing algorithm!")
+	}
+
+	loadBalancingAlgorithm = algorithm
 }

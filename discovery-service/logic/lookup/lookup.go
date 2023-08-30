@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/papannn/coda-assignment/discovery-service/api"
 	"github.com/papannn/coda-assignment/discovery-service/logic"
+	"github.com/papannn/coda-assignment/discovery-service/logic/load_balancer"
 )
 
 type ILookup interface {
@@ -11,7 +12,8 @@ type ILookup interface {
 }
 
 type Impl struct {
-	ServiceMap logic.ServiceMap
+	ServiceMap             logic.ServiceMap
+	LoadBalancingAlgorithm load_balancer.ILoadBalancer
 }
 
 func (impl *Impl) Lookup(req api.LookupRequest) (*api.LookupResponse, error) {
@@ -36,21 +38,7 @@ func (impl *Impl) Lookup(req api.LookupRequest) (*api.LookupResponse, error) {
 		}, nil
 	}
 
-	doneCycle := false
-	index := serviceList.Index
-	for serviceList.Index != index || !doneCycle {
-		doneCycle = true
-		serviceList.Index++
-		if serviceList.Index == int64(len(serviceList.Services)) {
-			serviceList.Index = 0
-		}
-
-		if serviceList.Services[serviceList.Index].IsActive {
-			break
-		}
-	}
-
-	service := serviceList.Services[serviceList.Index]
+	service := impl.LoadBalancingAlgorithm.LoadBalance(serviceList)
 	if !service.IsActive {
 		return nil, errors.New("no service available at the moment")
 	}
