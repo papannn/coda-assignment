@@ -74,4 +74,4 @@ There's some useful command such as:
 
 # Time spent
 
-Currently, roughly I've spent 4 hour of my time for this assignment
+Currently, roughly I've spent 5 hour of my time for this assignment
