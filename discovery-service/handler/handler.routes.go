@@ -7,4 +7,5 @@ import (
 func RegisterRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("/api/register", Register)
 	mux.HandleFunc("/api/unregister", Unregister)
+	mux.HandleFunc("/api/lookup", Lookup)
 }

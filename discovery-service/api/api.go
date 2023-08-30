@@ -19,3 +19,12 @@ type UnregisterRequest struct {
 type UnregisterResponse struct {
 	Message string `json:"message"`
 }
+
+type LookupRequest struct {
+	Namespace string `json:"namespace"`
+}
+
+type LookupResponse struct {
+	IP   string `json:"ip"`
+	Port string `json:"port"`
+}
