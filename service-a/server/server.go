@@ -4,9 +4,11 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"log"
+	"net/http"
+
 	"github.com/papannn/coda-assignment/lib/config"
 	"github.com/papannn/coda-assignment/service-a/handler"
-	"net/http"
 )
 
 func Serve() {
@@ -14,6 +16,10 @@ func Serve() {
 	config.ReadConfig(&app.Config)
 
 	registerServiceOnStartup(app)
+	app.RegisterRoutes()
+
+	log.Println(fmt.Sprintf("Running on address: %s:%s", app.Config.IP, app.Config.Port))
+	http.ListenAndServe(fmt.Sprintf("%s:%s", app.Config.IP, app.Config.Port), nil)
 }
 
 func registerServiceOnStartup(app handler.ServiceA) {
