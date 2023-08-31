@@ -1,11 +1,13 @@
 package load_balancer
 
-import "github.com/papannn/coda-assignment/discovery-service/logic"
+import (
+	"github.com/papannn/coda-assignment/discovery-service/domain"
+)
 
 type RoundRobin struct {
 }
 
-func (algorithm *RoundRobin) LoadBalance(serviceList *logic.ServiceList) logic.Service {
+func (algorithm *RoundRobin) LoadBalance(serviceList *domain.ServiceList) domain.Service {
 	doneCycle := false
 	index := serviceList.Index
 	for serviceList.Index != index || !doneCycle {

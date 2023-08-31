@@ -1,11 +1,9 @@
 package unregister
 
 import (
-	"errors"
-	"fmt"
 	"github.com/papannn/coda-assignment/discovery-service/api"
-	"github.com/papannn/coda-assignment/discovery-service/logic"
-	"slices"
+	"github.com/papannn/coda-assignment/discovery-service/domain"
+	"github.com/papannn/coda-assignment/discovery-service/repository"
 )
 
 type IUnregister interface {
@@ -13,31 +11,17 @@ type IUnregister interface {
 }
 
 type Impl struct {
-	ServiceMap logic.ServiceMap
+	Repository repository.IServiceRepository
 }
 
 func (impl *Impl) Unregister(req api.UnregisterRequest) error {
-	serviceList, ok := impl.ServiceMap[req.Namespace]
-	if !ok {
-		return errors.New("namespace is not found")
+	err := impl.Repository.RemoveServiceByNamespace(req.Namespace, domain.Service{
+		IP:   req.IP,
+		Port: req.Port,
+	})
+	if err != nil {
+		return err
 	}
 
-	resultIndex := -1
-	size := len(serviceList.Services)
-	for index, service := range serviceList.Services {
-		if req.IP == service.IP && req.Port == service.Port {
-			resultIndex = index
-			break
-		}
-	}
-
-	if resultIndex == -1 {
-		return errors.New(fmt.Sprintf("IP + Port is not registered on namespace %s", req.Namespace))
-	}
-
-	serviceList.Services = slices.Delete(serviceList.Services, resultIndex, resultIndex+1)
-	if resultIndex == size-1 {
-		serviceList.Index = 0
-	}
 	return nil
 }

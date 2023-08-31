@@ -1,4 +1,4 @@
-package logic
+package domain
 
 type Service struct {
 	IP       string
@@ -10,5 +10,3 @@ type ServiceList struct {
 	Services []Service
 	Index    int64
 }
-
-type ServiceMap = map[string]*ServiceList

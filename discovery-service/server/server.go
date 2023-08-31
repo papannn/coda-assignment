@@ -3,19 +3,20 @@ package server
 import (
 	"fmt"
 	"github.com/papannn/coda-assignment/discovery-service/handler"
-	"github.com/papannn/coda-assignment/discovery-service/logic"
 	"github.com/papannn/coda-assignment/discovery-service/logic/load_balancer"
 	"github.com/papannn/coda-assignment/discovery-service/logic/lookup"
 	"github.com/papannn/coda-assignment/discovery-service/logic/register"
 	"github.com/papannn/coda-assignment/discovery-service/logic/status"
 	"github.com/papannn/coda-assignment/discovery-service/logic/unregister"
+	"github.com/papannn/coda-assignment/discovery-service/repository"
+	"github.com/papannn/coda-assignment/discovery-service/repository/internal_var"
 	"github.com/papannn/coda-assignment/lib/config"
 	"log"
 	"net/http"
 )
 
 var (
-	serviceMap             logic.ServiceMap
+	repositoryImpl         repository.IServiceRepository
 	loadBalancingAlgorithm load_balancer.ILoadBalancer
 )
 
@@ -40,32 +41,36 @@ func injectLogic(app *handler.DiscoveryService) {
 
 func injectLookupLogic(app *handler.DiscoveryService) {
 	app.LookupLogic = &lookup.Impl{
-		ServiceMap:             serviceMap,
+		Repository:             repositoryImpl,
 		LoadBalancingAlgorithm: loadBalancingAlgorithm,
 	}
 }
 
 func injectRegisterLogic(app *handler.DiscoveryService) {
 	app.RegisterLogic = &register.Impl{
-		ServiceMap: serviceMap,
+		Repository: repositoryImpl,
 	}
 }
 
 func injectUnregisterLogic(app *handler.DiscoveryService) {
 	app.UnregisterLogic = &unregister.Impl{
-		ServiceMap: serviceMap,
+		Repository: repositoryImpl,
 	}
 }
 
 func injectStatusLogic(app *handler.DiscoveryService) {
 	app.StatusLogic = &status.Impl{
-		ServiceMap: serviceMap,
+		Repository: repositoryImpl,
 	}
 }
 
 func initiateGlobalVar(app *handler.DiscoveryService) {
-	serviceMap = make(map[string]*logic.ServiceList)
 	initiateLoadBalancingAlgorithm(app)
+	initiateRepository(app)
+}
+
+func initiateRepository(app *handler.DiscoveryService) {
+	repositoryImpl = internal_var.NewInternalVarImpl()
 }
 
 func initiateLoadBalancingAlgorithm(app *handler.DiscoveryService) {

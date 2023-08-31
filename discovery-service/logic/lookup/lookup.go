@@ -3,8 +3,8 @@ package lookup
 import (
 	"errors"
 	"github.com/papannn/coda-assignment/discovery-service/api"
-	"github.com/papannn/coda-assignment/discovery-service/logic"
 	"github.com/papannn/coda-assignment/discovery-service/logic/load_balancer"
+	"github.com/papannn/coda-assignment/discovery-service/repository"
 )
 
 type ILookup interface {
@@ -12,13 +12,13 @@ type ILookup interface {
 }
 
 type Impl struct {
-	ServiceMap             logic.ServiceMap
 	LoadBalancingAlgorithm load_balancer.ILoadBalancer
+	Repository             repository.IServiceRepository
 }
 
 func (impl *Impl) Lookup(req api.LookupRequest) (*api.LookupResponse, error) {
-	serviceList, ok := impl.ServiceMap[req.Namespace]
-	if !ok {
+	serviceList, err := impl.Repository.GetServiceListByNamespace(req.Namespace)
+	if err != nil {
 		return nil, errors.New("namespace is not found")
 	}
 
