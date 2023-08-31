@@ -91,3 +91,19 @@ func (impl *Impl) RemoveServiceByNamespace(namespace string, service domain.Serv
 
 	return nil
 }
+
+func (impl *Impl) GetAvailableServiceCountByNamespace(namespace string) (int64, error) {
+	serviceList, err := impl.GetServiceListByNamespace(namespace)
+	if err != nil {
+		return 0, err
+	}
+
+	var count int64 = 0
+	for _, service := range serviceList.Services {
+		if service.IsActive {
+			count++
+		}
+	}
+
+	return count, nil
+}

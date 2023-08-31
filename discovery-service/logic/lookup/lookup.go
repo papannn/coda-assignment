@@ -33,8 +33,9 @@ func (impl *Impl) Lookup(req api.LookupRequest) (*api.LookupResponse, error) {
 		}
 
 		return &api.LookupResponse{
-			IP:   service.IP,
-			Port: service.Port,
+			IP:                    service.IP,
+			Port:                  service.Port,
+			ServiceAvailableCount: 1,
 		}, nil
 	}
 
@@ -43,8 +44,14 @@ func (impl *Impl) Lookup(req api.LookupRequest) (*api.LookupResponse, error) {
 		return nil, errors.New("no service available at the moment")
 	}
 
+	serviceCount, err := impl.Repository.GetAvailableServiceCountByNamespace(req.Namespace)
+	if err != nil {
+		return nil, err
+	}
+
 	return &api.LookupResponse{
-		IP:   service.IP,
-		Port: service.Port,
+		IP:                    service.IP,
+		Port:                  service.Port,
+		ServiceAvailableCount: serviceCount,
 	}, nil
 }

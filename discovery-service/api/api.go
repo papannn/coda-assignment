@@ -25,8 +25,9 @@ type LookupRequest struct {
 }
 
 type LookupResponse struct {
-	IP   string `json:"ip"`
-	Port string `json:"port"`
+	IP                    string `json:"ip"`
+	Port                  string `json:"port"`
+	ServiceAvailableCount int64  `json:"service_available_count"`
 }
 
 type StatusResponse struct {
