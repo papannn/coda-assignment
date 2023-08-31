@@ -9,7 +9,7 @@ import (
 
 func (service *DiscoveryService) UnregisterEndpoint(writer http.ResponseWriter, request *http.Request) {
 	req := api.UnregisterRequest{}
-	err := parser.ParseRequest(request, &req)
+	err := parser.ParseJSONBody(request.Body, &req)
 	if err != nil {
 		response_writer.Write(writer, api.UnregisterResponse{
 			Message: err.Error(),

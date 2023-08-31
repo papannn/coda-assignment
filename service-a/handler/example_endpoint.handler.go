@@ -2,16 +2,15 @@ package handler
 
 import (
 	"fmt"
-	"net/http"
-
 	"github.com/papannn/coda-assignment/lib/parser"
 	"github.com/papannn/coda-assignment/lib/response_writer"
 	"github.com/papannn/coda-assignment/service-a/api"
+	"net/http"
 )
 
 func (service *ServiceA) ExampleEndpoint(writer http.ResponseWriter, request *http.Request) {
 	req := api.ExampleRequest{}
-	err := parser.ParseRequest(request, &req)
+	err := parser.ParseJSONBody(request.Body, &req)
 	if err != nil {
 		response_writer.Write(writer, api.ExampleResponse{}, http.StatusBadRequest)
 		return

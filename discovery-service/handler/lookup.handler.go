@@ -9,7 +9,7 @@ import (
 
 func (service *DiscoveryService) LookupEndpoint(writer http.ResponseWriter, request *http.Request) {
 	req := api.LookupRequest{}
-	err := parser.ParseRequest(request, &req)
+	err := parser.ParseJSONBody(request.Body, &req)
 	if err != nil {
 		response_writer.Write(writer, api.RegisterResponse{Message: err.Error()}, http.StatusBadRequest)
 		return

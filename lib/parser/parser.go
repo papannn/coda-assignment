@@ -3,11 +3,10 @@ package parser
 import (
 	"encoding/json"
 	"io"
-	"net/http"
 )
 
-func ParseRequest(request *http.Request, target any) error {
-	requestByte, err := io.ReadAll(request.Body)
+func ParseJSONBody(body io.ReadCloser, target any) error {
+	requestByte, err := io.ReadAll(body)
 	if err != nil {
 		return err
 	}
