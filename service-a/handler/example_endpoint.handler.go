@@ -16,6 +16,6 @@ func (service *ServiceA) ExampleEndpoint(writer http.ResponseWriter, request *ht
 		return
 	}
 
-	writer.Header().Set("X-Forwarded-Host", fmt.Sprintf("%s : %s:%s", service.Config.Namespace, service.Config.IP, service.Config.Port))
+	writer.Header().Set("X-Forwarded-Host", fmt.Sprintf("%s : %s:%d", service.Config.Namespace, service.Config.IP, service.Config.Port))
 	response_writer.Write(writer, req, http.StatusOK)
 }
