@@ -22,7 +22,6 @@ func Serve() {
 		registerServiceOnStartup(app)
 		log.Println(fmt.Sprintf("Running on address: %s:%d", app.Config.IP, app.Config.Port))
 		_ = http.ListenAndServe(fmt.Sprintf("%s:%d", app.Config.IP, app.Config.Port), nil)
-		unregisterService(app)
 		oldPort := app.Config.Port
 		app.Config.Port++
 		log.Println(fmt.Sprintf("Port: %d already been used, trying to use port %d", oldPort, app.Config.Port))
