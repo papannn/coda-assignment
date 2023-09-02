@@ -2,7 +2,12 @@ package server
 
 import (
 	"fmt"
+	"log"
+	"net/http"
+	"time"
+
 	"github.com/papannn/coda-assignment/discovery-service/handler"
+	health_check2 "github.com/papannn/coda-assignment/discovery-service/logic/health_check"
 	"github.com/papannn/coda-assignment/discovery-service/logic/load_balancer"
 	"github.com/papannn/coda-assignment/discovery-service/logic/lookup"
 	"github.com/papannn/coda-assignment/discovery-service/logic/register"
@@ -10,9 +15,8 @@ import (
 	"github.com/papannn/coda-assignment/discovery-service/logic/unregister"
 	"github.com/papannn/coda-assignment/discovery-service/repository"
 	"github.com/papannn/coda-assignment/discovery-service/repository/internal_var"
+	"github.com/papannn/coda-assignment/discovery-service/scheduler/health_check"
 	"github.com/papannn/coda-assignment/lib/config"
-	"log"
-	"net/http"
 )
 
 var (
@@ -28,8 +32,16 @@ func Serve() {
 	injectLogic(&app)
 	app.RegisterRoutes()
 
+	go registerJobs(&app)
+
 	log.Println(fmt.Sprintf("Running on address: %s:%s", app.Config.IP, app.Config.Port))
 	http.ListenAndServe(fmt.Sprintf("%s:%s", app.Config.IP, app.Config.Port), nil)
+}
+
+func registerJobs(app *handler.DiscoveryService) {
+	for range time.Tick(time.Second * time.Duration(app.Config.HealthCheckTimeInterval)) {
+		health_check.SchedulerHealthCheck(app)
+	}
 }
 
 func injectLogic(app *handler.DiscoveryService) {
@@ -37,6 +49,7 @@ func injectLogic(app *handler.DiscoveryService) {
 	injectUnregisterLogic(app)
 	injectLookupLogic(app)
 	injectStatusLogic(app)
+	injectHealthCheckLogic(app)
 }
 
 func injectLookupLogic(app *handler.DiscoveryService) {
@@ -61,6 +74,13 @@ func injectUnregisterLogic(app *handler.DiscoveryService) {
 func injectStatusLogic(app *handler.DiscoveryService) {
 	app.StatusLogic = &status.Impl{
 		Repository: repositoryImpl,
+	}
+}
+
+func injectHealthCheckLogic(app *handler.DiscoveryService) {
+	app.HealthCheckLogic = health_check2.Impl{
+		Repository: repositoryImpl,
+		Config:     app.Config,
 	}
 }
 

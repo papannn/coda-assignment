@@ -2,6 +2,6 @@
   "ip": "localhost",
   "port": "4444",
   "health_check_time_interval": 5,
-  "timeout_threshold": 3,
+  "timeout_threshold": 300,
   "load_balancing_algorithm": "round_robin"
 }
