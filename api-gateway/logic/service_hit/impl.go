@@ -3,6 +3,7 @@ package service_hit
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/papannn/coda-assignment/api-gateway/config"
 	"github.com/papannn/coda-assignment/discovery-service/api"
@@ -44,7 +45,7 @@ func (impl *Impl) lookup(namespace string) (*api.LookupResponse, error) {
 
 	resp, err := client.Do(req)
 	if err != nil {
-		return nil, err
+		return nil, errors.New("discovery service is not available right now")
 	}
 
 	respLookup := api.LookupResponse{}

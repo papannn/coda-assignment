@@ -15,6 +15,7 @@ func (service *APIGateway) ExampleEndpoint(writer http.ResponseWriter, request *
 		response_writer.Write(writer, api.ErrorMessageResponse{
 			Message: err.Error(),
 		}, http.StatusInternalServerError)
+		return
 	}
 
 	resp := serviceAApi.ExampleResponse{}
