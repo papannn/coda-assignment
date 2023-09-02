@@ -45,14 +45,14 @@ func (impl *Impl) GetServiceListByNamespace(namespace string) (*domain.ServiceLi
 func (impl *Impl) AddServiceByNamespace(namespace string, service domain.Service) error {
 	serviceList, ok := impl.ServiceMap[namespace]
 	if ok {
-		serviceList.Services = append(serviceList.Services, domain.Service{
+		serviceList.Services = append(serviceList.Services, &domain.Service{
 			IP:       service.IP,
 			Port:     service.Port,
 			IsActive: true,
 		})
 	} else {
 		impl.ServiceMap[namespace] = &domain.ServiceList{
-			Services: []domain.Service{
+			Services: []*domain.Service{
 				{
 					IP:       service.IP,
 					Port:     service.Port,

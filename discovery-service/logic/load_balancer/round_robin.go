@@ -22,5 +22,5 @@ func (algorithm *RoundRobin) LoadBalance(serviceList *domain.ServiceList) domain
 		}
 	}
 
-	return serviceList.Services[serviceList.Index]
+	return *serviceList.Services[serviceList.Index]
 }

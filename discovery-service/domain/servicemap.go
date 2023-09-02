@@ -7,6 +7,6 @@ type Service struct {
 }
 
 type ServiceList struct {
-	Services []Service
+	Services []*Service
 	Index    int64
 }
