@@ -4,4 +4,5 @@ use (
 	discovery-service
 	lib
 	service-a
+	api-gateway
 )

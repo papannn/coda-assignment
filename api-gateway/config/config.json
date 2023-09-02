@@ -1,0 +1,5 @@
+{
+  "ip": "localhost",
+  "port": "5555",
+  "discovery_service_base_url": "http://localhost:4444"
+}
