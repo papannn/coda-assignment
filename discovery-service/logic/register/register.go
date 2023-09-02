@@ -15,7 +15,6 @@ type Impl struct {
 }
 
 func (impl *Impl) Register(request api.RegisterRequest) error {
-	// TODO write validation so no duplicate IP + Port will be in the list
 	err := impl.Repository.AddServiceByNamespace(request.Namespace, domain.Service{
 		IP:   request.IP,
 		Port: request.Port,
