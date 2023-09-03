@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"slices"
 
 	"github.com/papannn/coda-assignment/discovery-service/domain"
 )
@@ -96,7 +95,7 @@ func (impl *Impl) RemoveServiceByNamespace(namespace string, currService domain.
 		return errors.New(fmt.Sprintf("IP + Port is not registered on namespace %s", namespace))
 	}
 
-	serviceList.Services = slices.Delete(serviceList.Services, resultIndex, resultIndex+1)
+	serviceList.Services[resultIndex].IsActive = false
 	if resultIndex == size-1 {
 		serviceList.Index = 0
 	}

@@ -25,14 +25,14 @@ func (impl *Impl) HealthCheck() error {
 		}
 
 		for _, service := range serviceList.Services {
-			impl.hitHealthCheck(service)
+			impl.hitHealthCheck(namespace, service)
 		}
 	}
 
 	return nil
 }
 
-func (impl *Impl) hitHealthCheck(service *domain.Service) {
+func (impl *Impl) hitHealthCheck(namespace string, service *domain.Service) {
 	client := http.Client{
 		Timeout: time.Millisecond * time.Duration(impl.Config.TimeoutThreshold),
 	}
@@ -42,6 +42,6 @@ func (impl *Impl) hitHealthCheck(service *domain.Service) {
 	_, err := client.Do(req)
 	if err != nil {
 		log.Println(err)
-		service.IsActive = false
+		_ = impl.Repository.RemoveServiceByNamespace(namespace, *service)
 	}
 }
