@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/papannn/coda-assignment/lib/file"
+
 	"github.com/papannn/coda-assignment/discovery-service/domain"
 )
 
@@ -16,8 +18,13 @@ type Impl struct {
 }
 
 func NewInternalVarImpl() *Impl {
+	var serviceMap ServiceMap
+	err := file.ReadFile(&serviceMap, "/repository/internal_var/services.json")
+	if err != nil {
+		serviceMap = make(map[string]*domain.ServiceList)
+	}
 	return &Impl{
-		ServiceMap: make(map[string]*domain.ServiceList),
+		ServiceMap: serviceMap,
 	}
 }
 
@@ -122,5 +129,5 @@ func (impl *Impl) GetAvailableServiceCountByNamespace(namespace string) (int64, 
 
 func (impl *Impl) saveDataToJson() {
 	byteData, _ := json.Marshal(impl.ServiceMap)
-	os.WriteFile("repository/internal_var/services.json", byteData, 0644)
+	_ = os.WriteFile("repository/internal_var/services.json", byteData, 0644)
 }
