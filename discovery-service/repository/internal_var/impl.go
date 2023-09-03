@@ -72,7 +72,7 @@ func (impl *Impl) AddServiceByNamespace(namespace string, service domain.Service
 	return nil
 }
 
-func (impl *Impl) RemoveServiceByNamespace(namespace string, service domain.Service) error {
+func (impl *Impl) RemoveServiceByNamespace(namespace string, currService domain.Service) error {
 	serviceList, ok := impl.ServiceMap[namespace]
 	if !ok {
 		return errors.New("namespace is not found")
@@ -81,7 +81,7 @@ func (impl *Impl) RemoveServiceByNamespace(namespace string, service domain.Serv
 	resultIndex := -1
 	size := len(serviceList.Services)
 	for index, service := range serviceList.Services {
-		if service.IP == service.IP && service.Port == service.Port {
+		if currService.IP == service.IP && currService.Port == service.Port {
 			resultIndex = index
 			break
 		}
