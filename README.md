@@ -193,7 +193,7 @@ Currently only the `Service A` that got scaled horizontally, we can't achieve th
 **Solution that I can propose** is to use **Client-Side Load Balancer** to tackle this problem, this will raises another problem we have to manually put the list of `API Gateway Service` and `Discovery Service` to the config.
 
 ### Race Condition
-Not yet tested, but because currently we are not using storage that support transaction lock such as RDBMS that have DB Transaction, when Race Condition happens, for example two client hit `api/register` at the same time, there's a chance for data anomaly. 
+Because currently we are not using storage that support transaction lock such as RDBMS that have DB Transaction, when Race Condition happens, for example two client hit `/api/register` at the same time / when lookup API hit too fast, there's a chance for data anomaly. 
 
 **Solution that I can propose** for current logic is to add Thread lock for every updating the data, this will raises performance issue to the `Discovery Service`. **The better solution** is using RDBMS and using DB Transaction.
 
@@ -219,4 +219,4 @@ It's kinda scary to change the current existing code because if not tested prope
 
 # Time spent
 
-Currently, roughly I've spent 13 hour of my time for this assignment
+Currently, roughly I've spent 15 hour of my time for this assignment
