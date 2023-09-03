@@ -6,10 +6,6 @@ import (
 	"github.com/papannn/coda-assignment/discovery-service/repository"
 )
 
-type IRegister interface {
-	Register(request api.RegisterRequest) error
-}
-
 type Impl struct {
 	Repository repository.IServiceRepository
 }

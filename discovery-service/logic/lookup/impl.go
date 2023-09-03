@@ -2,14 +2,11 @@ package lookup
 
 import (
 	"errors"
+
 	"github.com/papannn/coda-assignment/discovery-service/api"
 	"github.com/papannn/coda-assignment/discovery-service/logic/load_balancer"
 	"github.com/papannn/coda-assignment/discovery-service/repository"
 )
-
-type ILookup interface {
-	Lookup(req api.LookupRequest) (*api.LookupResponse, error)
-}
 
 type Impl struct {
 	LoadBalancingAlgorithm load_balancer.ILoadBalancer

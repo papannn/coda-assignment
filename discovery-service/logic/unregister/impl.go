@@ -6,10 +6,6 @@ import (
 	"github.com/papannn/coda-assignment/discovery-service/repository"
 )
 
-type IUnregister interface {
-	Unregister(req api.UnregisterRequest) error
-}
-
 type Impl struct {
 	Repository repository.IServiceRepository
 }

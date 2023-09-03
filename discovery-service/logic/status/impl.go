@@ -5,10 +5,6 @@ import (
 	"github.com/papannn/coda-assignment/discovery-service/repository"
 )
 
-type IStatus interface {
-	Status() (*api.StatusResponse, error)
-}
-
 type Impl struct {
 	Repository repository.IServiceRepository
 }
