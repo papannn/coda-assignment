@@ -42,6 +42,7 @@ func (impl *Impl) Post(namespace string, requestURI string, body io.ReadCloser) 
 		URL := fmt.Sprintf("http://%s:%s%s", lookupResp.IP, lookupResp.Port, requestURI)
 		resp, err := http.Post(URL, "application/json", bytes.NewBuffer(jsonByte))
 		if err == nil {
+			resp.Header.Set("X-Forwarded-Host", fmt.Sprintf("%s : %s:%s", namespace, lookupResp.IP, lookupResp.Port))
 			return resp, err
 		}
 		countLookup++
