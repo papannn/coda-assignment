@@ -16,7 +16,7 @@ import (
 	"github.com/papannn/coda-assignment/discovery-service/repository"
 	"github.com/papannn/coda-assignment/discovery-service/repository/internal_var"
 	"github.com/papannn/coda-assignment/discovery-service/scheduler/health_check"
-	"github.com/papannn/coda-assignment/lib/config"
+	"github.com/papannn/coda-assignment/lib/file"
 )
 
 var (
@@ -27,7 +27,7 @@ var (
 func Serve() {
 	app := handler.DiscoveryService{}
 
-	config.ReadConfig(&app.Config)
+	file.ReadFile(&app.Config, "/config/config.json")
 	initiateGlobalVar(&app)
 	injectLogic(&app)
 	app.RegisterRoutes()

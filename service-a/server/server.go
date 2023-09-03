@@ -8,13 +8,13 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/papannn/coda-assignment/lib/config"
+	"github.com/papannn/coda-assignment/lib/file"
 	"github.com/papannn/coda-assignment/service-a/handler"
 )
 
 func Serve() {
 	app := handler.ServiceA{}
-	config.ReadConfig(&app.Config)
+	file.ReadFile(&app.Config, "/config/config.json")
 
 	app.RegisterRoutes()
 

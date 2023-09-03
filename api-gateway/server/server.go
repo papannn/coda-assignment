@@ -7,12 +7,12 @@ import (
 
 	"github.com/papannn/coda-assignment/api-gateway/handler"
 	"github.com/papannn/coda-assignment/api-gateway/logic/service_hit"
-	"github.com/papannn/coda-assignment/lib/config"
+	"github.com/papannn/coda-assignment/lib/file"
 )
 
 func Serve() {
 	app := handler.APIGateway{}
-	config.ReadConfig(&app.Config)
+	file.ReadFile(&app.Config, "/config/config.json")
 	app.RegisterRoutes()
 	injectServiceHitImpl(&app)
 
