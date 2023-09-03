@@ -1,10 +1,13 @@
 package internal_var
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/papannn/coda-assignment/discovery-service/domain"
+	"os"
 	"slices"
+
+	"github.com/papannn/coda-assignment/discovery-service/domain"
 )
 
 type ServiceMap = map[string]*domain.ServiceList
@@ -48,6 +51,7 @@ func (impl *Impl) AddServiceByNamespace(namespace string, service domain.Service
 		for _, currentService := range serviceList.Services {
 			if service.IP == currentService.IP && service.Port == currentService.Port {
 				currentService.IsActive = true
+				impl.saveDataToJson()
 				return nil
 			}
 		}
@@ -69,6 +73,7 @@ func (impl *Impl) AddServiceByNamespace(namespace string, service domain.Service
 		}
 	}
 
+	impl.saveDataToJson()
 	return nil
 }
 
@@ -96,6 +101,7 @@ func (impl *Impl) RemoveServiceByNamespace(namespace string, currService domain.
 		serviceList.Index = 0
 	}
 
+	impl.saveDataToJson()
 	return nil
 }
 
@@ -113,4 +119,9 @@ func (impl *Impl) GetAvailableServiceCountByNamespace(namespace string) (int64, 
 	}
 
 	return count, nil
+}
+
+func (impl *Impl) saveDataToJson() {
+	byteData, _ := json.Marshal(impl.ServiceMap)
+	os.WriteFile("repository/internal_var/services.json", byteData, 0644)
 }

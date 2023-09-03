@@ -1,12 +1,12 @@
 package domain
 
 type Service struct {
-	IP       string
-	Port     string
-	IsActive bool
+	IP       string `json:"ip"`
+	Port     string `json:"port"`
+	IsActive bool   `json:"isActive"`
 }
 
 type ServiceList struct {
-	Services []*Service
-	Index    int64
+	Services []*Service `json:"services"`
+	Index    int64      `json:"index"`
 }
